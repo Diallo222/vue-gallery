@@ -1,6 +1,6 @@
 <template lang="">
-  <div ref="el">
-    class="w-full h-full">
+  <div ref="el" class="w-full h-full">>
+    
     <div
       class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-4 lg:gap-10"
     >
@@ -65,10 +65,11 @@ const favorites = computed(() => {
 });
 
 
-console.log("TESTING", favorites.value);
-
 onMounted(() => {
   store.dispatch("getImages", { query: "nature" });
+  if (localStorage.getItem("favorites")) {    
+    store.state.favorites = JSON.parse(localStorage.getItem("favorites"));
+  }
 });
 
 const loading = computed(() => {

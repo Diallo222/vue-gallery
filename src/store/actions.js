@@ -42,7 +42,15 @@ export const getImages = async ({ commit, state }, payload) => {
         "setFavorites",
         state.favorites.filter((favorite) => favorite.id !== payload.image.id)
       );
+      localStorage.setItem(
+        "favorites",
+        JSON.stringify([...state.favorites])
+      );
       return;
     }
     commit("setFavorites", [...state.favorites, payload.image]);
+    localStorage.setItem(
+      "favorites",
+      JSON.stringify([...state.favorites])
+    );
   };
