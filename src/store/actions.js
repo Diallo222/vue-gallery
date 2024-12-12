@@ -1,9 +1,7 @@
 import axiosClient from "../config/axiosClient";
 
-export const getImages = async ({ commit, state }, payload) => {
-    state.loading = true;
-  
-    if (payload.query !== state.query) {
+export const getImages = async ({ commit, state }, payload) => {  
+    if (payload.query && payload.query !== state.query) {
       state.page = 1; 
     } else {
       state.page++;
@@ -13,14 +11,14 @@ export const getImages = async ({ commit, state }, payload) => {
       commit("setLoading", true);
       const response = await axiosClient.get("/search/photos", {
         params: {
-          query: payload.query !== state.query ? payload.query : state.query,
+          query: payload.query && payload.query !== state.query ? payload.query : state.query,
           per_page: state.perPage,
           page: state.page,
           order_by: state.sort,
         },
       });
   
-      if (payload.query !== state.query) {
+      if (payload.query && payload.query !== state.query) {
         commit("setQuery", payload.query);
         commit("setImages", response.data.results);
       } else {

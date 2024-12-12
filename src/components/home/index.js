@@ -1,3 +1,3 @@
 import Search from "./Search.vue";
-
-export { Search };
+import Loader from "./Loader.vue";
+export { Search , Loader };

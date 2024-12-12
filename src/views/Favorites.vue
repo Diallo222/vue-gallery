@@ -1,5 +1,5 @@
 <template lang="">
-  <div class="w-full h-full">
+  <div class="w-full h-full mt-10">
     <div
       v-if="Favorites.length === 0"
       class="flex items-center justify-center py-10"
