@@ -1,0 +1,10 @@
+export const setLoading = (state, value) => (state.loading = value);
+export const setError = (state, value) => (state.error = value);
+export const setImages = (state, value) => (state.images = value);
+export const setFavorites = (state, value) => (state.favorites = value);
+export const setPage = (state, value) => (state.page = value);
+export const setPerPage = (state, value) => (state.perPage = value);
+export const setTotal = (state, value) => (state.total = value);
+export const setTotalPages = (state, value) => (state.total_pages = value);
+export const setQuery = (state, value) => (state.query = value);
+export const setSort = (state, value) => (state.sort = value);
