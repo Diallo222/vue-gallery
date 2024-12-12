@@ -24,6 +24,7 @@
       :src="image.urls.regular"
       alt=""
       class="w-full h-72 md:h-96 object-cover rounded-xl"
+      @click="openModal"
     />
     <div class="flex flex-wrap items-center mt-4 gap-4">
       <img
@@ -51,18 +52,19 @@
         />
       </svg>
     </button>
+    <ImageModal
+      :image="selectedImage"
+      :isOpen="isModalOpen"
+      @close="closeModal"
+    />
   </div>
 </template>
 <script setup>
 import { useStore } from "vuex";
+import { ref } from "vue";
 import axios from "axios";
-
+import ImageModal from "./ImageModal.vue";
 const store = useStore();
-
-function checkFav(image) {
-  return props.favorites.find((favorite) => favorite.id === image.id);
-}
-
 const props = defineProps({
   image: {
     type: Object,
@@ -74,6 +76,21 @@ const props = defineProps({
   },
 });
 
+function checkFav(image) {
+  return props.favorites.find((favorite) => favorite.id === image.id);
+}
+
+const isModalOpen = ref(false);
+const selectedImage = ref(null);
+
+const openModal = () => {
+  selectedImage.value = props.image; // Set the selected image
+  isModalOpen.value = true; // Open the modal
+};
+
+const closeModal = () => {
+  isModalOpen.value = false; // Close the modal
+};
 const toggleFav = () => {
   store.dispatch("addToFavorites", { image: props.image });
 };
