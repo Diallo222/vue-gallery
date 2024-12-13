@@ -1,54 +1,56 @@
 import axiosClient from "../config/axiosClient";
 
-export const getImages = async ({ commit, state }, payload) => {  
+export const getImages = async ({ commit, state }, payload) => {
+  // Check if query has changed
+  if (payload.query && payload.query !== state.query) {
+    state.page = 1;
+  } else {
+    state.page++;
+  }
+
+  try {
+    commit("setLoading", true);
+    const response = await axiosClient.get("/search/photos", {
+      params: {
+        query:
+          payload.query && payload.query !== state.query
+            ? payload.query
+            : state.query,
+        per_page: state.perPage,
+        page: state.page,
+        order_by: state.sort,
+      },
+    });
+
+    // Check if query has not changed and concatenate results
     if (payload.query && payload.query !== state.query) {
-      state.page = 1; 
+      commit("setQuery", payload.query);
+      commit("setImages", response.data.results);
     } else {
-      state.page++;
+      commit("setImages", state.images.concat(response.data.results));
     }
 
-    try {
-      commit("setLoading", true);
-      const response = await axiosClient.get("/search/photos", {
-        params: {
-          query: payload.query && payload.query !== state.query ? payload.query : state.query,
-          per_page: state.perPage,
-          page: state.page,
-          order_by: state.sort,
-        },
-      });
-  
-      if (payload.query && payload.query !== state.query) {
-        commit("setQuery", payload.query);
-        commit("setImages", response.data.results);
-      } else {
-        commit("setImages", state.images.concat(response.data.results));
-      }
-      commit("setTotal", response.data.total);
-      commit("setTotalPages", response.data.total_pages);
-      commit("setLoading", false);
-    } catch (error) {
-      console.error("Error fetching images:", error);
-      commit("setError", error);
-      commit("setLoading", false);
-    }
-  };
+    commit("setTotal", response.data.total);
+    commit("setTotalPages", response.data.total_pages);
+    commit("setLoading", false);
+  } catch (error) {
+    console.error("Error fetching images:", error);
+    commit("setError", error);
+    commit("setLoading", false);
+  }
+};
 
-  export const addToFavorites = ({ commit , state }, payload) => {    
-    if (state.favorites.find((favorite) => favorite.id === payload.image.id)) {
-      commit(
-        "setFavorites",
-        state.favorites.filter((favorite) => favorite.id !== payload.image.id)
-      );
-      localStorage.setItem(
-        "favorites",
-        JSON.stringify([...state.favorites])
-      );
-      return;
-    }
-    commit("setFavorites", [...state.favorites, payload.image]);
-    localStorage.setItem(
-      "favorites",
-      JSON.stringify([...state.favorites])
+export const addToFavorites = ({ commit, state }, payload) => {
+  // Check if image is already favorited
+  if (state.favorites.find((favorite) => favorite.id === payload.image.id)) {
+    commit(
+      "setFavorites",
+      state.favorites.filter((favorite) => favorite.id !== payload.image.id)
     );
-  };
+    localStorage.setItem("favorites", JSON.stringify([...state.favorites]));
+    return;
+  }
+
+  commit("setFavorites", [...state.favorites, payload.image]);
+  localStorage.setItem("favorites", JSON.stringify([...state.favorites]));
+};
