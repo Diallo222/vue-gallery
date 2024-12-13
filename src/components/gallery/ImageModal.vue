@@ -5,16 +5,34 @@
     @click.self="closeModal"
   >
     <div
-      class="bg-white p-6 rounded-lg shadow-2xl relative flex flex-col md:flex-row max-w-4xl w-full mx-4"
+      class="bg-white p-6 rounded-lg shadow-2xl relative flex flex-col md:flex-row max-w-4xl w-full mx-4 gap-4"
     >
-      <button
+    <button
         class="absolute top-4 right-4 text-white focus:outline-none rounded-full px-4 py-2"
         @click="closeModal"
       >
         ✕
       </button>
-      <button
-        class="absolute top-4 left-4 rounded-full"
+    <img
+        :src="image.urls.full"
+        alt="Image Detail"
+        class="w-full md:w-1/2 h-64 md:h-auto object-cover rounded-lg md:rounded-l-lg"
+      />
+     
+    <div class="flex flex-col gap-4 items-center justify-center"> 
+      <div class="md:mt-0 md:ml-6 w-full">
+        <p class="text-black text-sm font-medium mb-2">
+          Uploaded by: <span class="text-gray-800">{{ image.user.name }}</span>
+        </p>
+        <p class="text-gray-700 text-sm">
+          {{ image.description || "No description available" }}
+        </p>
+      </div>
+      <div class="flex items-center justify-between w-full">
+        <button
+        class=" rounded-full"
+        :class="{ 'bg-red-400': checked }"
+        @click="toggleFav"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -31,25 +49,34 @@
           />
         </svg>
       </button>
-      <img
-        :src="image.urls.full"
-        alt="Image Detail"
-        class="w-full md:w-1/2 h-64 md:h-auto object-cover rounded-lg md:rounded-l-lg"
-      />
-      <div class="mt-4 md:mt-0 md:ml-6 w-full">
-        <p class="text-black text-sm font-medium mb-2">
-          Uploaded by: <span class="text-gray-800">{{ image.user.name }}</span>
-        </p>
-        <p class="text-gray-700 text-sm">
-          {{ image.description || "No description available" }}
-        </p>
+      <button
+      class="px-4 py-2 bg-black text-white rounded-full"
+      @click="downloadImg(image.urls.full)"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="1.5"
+        stroke="currentColor"
+        class="w-4 h-4"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"
+        />
+      </svg>
+    </button>
       </div>
+      </div>
+      
+     
     </div>
   </div>
 </template>
 
 <script setup>
-import { defineProps, defineEmits } from "vue";
 
 const props = defineProps({
   image: {
@@ -60,10 +87,23 @@ const props = defineProps({
     type: Boolean,
     required: true,
   },
+  checked: {
+    type: Boolean,
+    required: true,
+  },
+  toggleFav: {
+    type: Function,
+    required: true,
+  },
+  downloadImg: {
+    type: Function,
+    required: true,
+  },
 });
 
 const emit = defineEmits(["close"]);
 
+// Close the modal
 const closeModal = () => {
   emit("close");
 };

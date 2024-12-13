@@ -54,6 +54,9 @@
     </button>
     <ImageModal
       :image="selectedImage"
+      :checked="checkFav(image)"
+      :toggleFav="toggleFav"
+      :downloadImg="downloadImg"
       :isOpen="isModalOpen"
       @close="closeModal"
     />
@@ -84,12 +87,12 @@ const isModalOpen = ref(false);
 const selectedImage = ref(null);
 
 const openModal = () => {
-  selectedImage.value = props.image; // Set the selected image
-  isModalOpen.value = true; // Open the modal
+  selectedImage.value = props.image; 
+  isModalOpen.value = true; 
 };
 
 const closeModal = () => {
-  isModalOpen.value = false; // Close the modal
+  isModalOpen.value = false;
 };
 const toggleFav = () => {
   store.dispatch("addToFavorites", { image: props.image });
