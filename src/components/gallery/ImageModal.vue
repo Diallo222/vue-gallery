@@ -17,7 +17,7 @@
       <img
         :src="image.urls.full"
         alt="Image Detail"
-        class="w-full md:w-1/2 h-64 md:h-auto object-cover rounded-lg md:rounded-l-lg"
+        class="w-full md:w-1/2 h-64 md:h-[600px] object-cover rounded-lg md:rounded-l-lg"
       />
 
       <div class="flex flex-col gap-4 items-center justify-center">

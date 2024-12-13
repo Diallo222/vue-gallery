@@ -2,7 +2,7 @@
   <div class="w-full h-full pb-20">
     <Search />
     <div
-      class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-4 lg:gap-10"
+      class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2 md:gap-4 lg:gap-6"
     >
       <!-- Image cards -->
       <div v-for="image in images" :key="image.id">
@@ -67,4 +67,4 @@ const getMoreImages = () => {
   store.dispatch("getImages", { query: store.state.query });
 };
 </script>
-<style lang=""></style>
+<style scoped></style>
