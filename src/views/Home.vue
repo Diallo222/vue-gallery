@@ -1,50 +1,42 @@
 <template lang="">
- 
-  <div ref="el" class="w-full h-full pb-20">
-    <Search /> 
+  <div class="w-full h-full pb-20">
+    <Search />
     <div
       class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-4 lg:gap-10"
     >
+      <!-- Image cards -->
       <div v-for="image in images" :key="image.id">
         <ImageCard :image="image" :favorites="favorites" />
       </div>
     </div>
+     <!-- Loader -->
     <Loader :loading="loading" />
-    <button v-if="!loading && images.length > 0" class="mx-auto block my-10" @click="getMoreImages">
+    <!-- Load more button -->
+    <button
+      v-if="!loading && images.length > 0"
+      class="mx-auto block my-10"
+      @click="getMoreImages"
+    >
       Load more
     </button>
-    <div v-if="!error && images.length === 0 && !loading" class="flex items-center justify-center py-10">
+     <!--If there are No results -->
+    <div
+      v-if="!error && images.length === 0 && !loading"
+      class="flex items-center justify-center py-10"
+    >
       <p class="text-2xl text-black">No results found</p>
     </div>
+    <!-- Error message -->
     <div v-if="error" class="flex items-center justify-center py-10">
       <p class="text-red-500">An error occured try refreshing the page</p>
     </div>
   </div>
-  
 </template>
 <script setup>
 import { useStore } from "vuex";
 import { onMounted, computed, ref } from "vue";
-import { useInfiniteScroll } from "@vueuse/core";
 import { ImageCard } from "../components/gallery";
-import { Loader , Search} from "../components/home";
-const el = ref(null);
-
-// const { reset } = useInfiniteScroll(
-//   el,
-//   () => {
-//     store.dispatch("getImages");
-//     console.log("scrolled");
-//   },
-//   {
-//     distance: 100,
-//   }
-// );
-
-// function resetList() {
-//   store.state.images = [];
-//   reset();
-// }
+import { Loader, Search } from "../components/home";
 
 const store = useStore();
 
@@ -52,10 +44,10 @@ const favorites = computed(() => {
   return store.state.favorites;
 });
 
-
 onMounted(() => {
   store.dispatch("getImages", { query: "nature" });
-  if (localStorage.getItem("favorites")) {    
+  //Check and Get favorites from local storage
+  if (localStorage.getItem("favorites")) {
     store.state.favorites = JSON.parse(localStorage.getItem("favorites"));
   }
 });

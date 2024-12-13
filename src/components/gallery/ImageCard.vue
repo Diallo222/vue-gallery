@@ -1,5 +1,6 @@
 <template lang="">
   <div class="relative w-auto">
+    <!-- Toggle Favorite button -->
     <button
       class="absolute top-4 right-4 rounded-full"
       :class="{ 'bg-red-400': checkFav(image) }"
@@ -33,6 +34,8 @@
       />
       <p class="text-black">{{ image.user.name }}</p>
     </div>
+
+    <!-- Download button -->
     <button
       class="px-4 py-2 mt-5 bg-black text-white rounded-full"
       @click="downloadImg(image.urls.full)"
@@ -68,6 +71,7 @@ import { ref } from "vue";
 import axios from "axios";
 import ImageModal from "./ImageModal.vue";
 const store = useStore();
+
 const props = defineProps({
   image: {
     type: Object,
@@ -79,6 +83,7 @@ const props = defineProps({
   },
 });
 
+// check if the image is favorited
 function checkFav(image) {
   return props.favorites.find((favorite) => favorite.id === image.id);
 }
@@ -87,17 +92,20 @@ const isModalOpen = ref(false);
 const selectedImage = ref(null);
 
 const openModal = () => {
-  selectedImage.value = props.image; 
-  isModalOpen.value = true; 
+  selectedImage.value = props.image;
+  isModalOpen.value = true;
 };
 
 const closeModal = () => {
   isModalOpen.value = false;
 };
+
+// Function to toggle favorite
 const toggleFav = () => {
   store.dispatch("addToFavorites", { image: props.image });
 };
 
+// Function to download the image
 async function downloadImg(responseUrl) {
   try {
     const response = await axios.get(responseUrl, {

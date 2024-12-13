@@ -1,15 +1,14 @@
 <template lang="">
-  <div class=" flex items-center justify-center gap-2 mx-auto mt-10 mb-9">
+  <div class="flex items-center justify-center gap-2 mx-auto mt-10 mb-9">
+    <!-- Search Input -->
     <input
       type="text"
       placeholder="Search for images"
       class="w-[90%] md:w-1/2 rounded-full px-4 py-2 bg-white shadow-sm text-black"
       @change="onchange"
     />
-    <div
-      v-if="store.state.loading"
-      class="flex items-center justify-center"
-    >
+
+    <div v-if="store.state.loading" class="flex items-center justify-center">
       <svg
         class="animate-spin -ml-1 mr-3 h-14 w-14 text-black"
         xmlns="http://www.w3.org/2000/svg"
@@ -39,6 +38,7 @@ import { onMounted, computed } from "vue";
 
 const store = useStore();
 
+// Search for images on change
 const onchange = ($event) => {
   if ($event.target.value === "") {
     return;

@@ -9,6 +9,7 @@
     <div
       class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-4 lg:gap-10"
     >
+     <!-- Display favorite images -->
       <div v-for="image in Favorites" :key="image.id">
         <ImageCard :image="image" :favorites="Favorites" />
       </div>
